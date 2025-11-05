@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  # Modo DEV 
+  api:
+    container_name: ex3-api-dev
+    build:
+      context: ./api       
+      dockerfile: Dockerfile
+      target: dev          # Usa o estágio "dev" do Dockerfile
+    volumes:
+      - ./api:/app         # Monta o volume para o live-reload
+      - /app/node_modules  
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_USER: ${POSTGRES_USER}
+      DB_PASS: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB}
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  # Banco de dados
+  db:
+    container_name: ex3-db-dev
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata_ex3:/var/lib/postgresql/data
+    ports:
+      - "5434:5432" 
+    restart: unless-stopped
+
+volumes:
+  pgdata_ex3:

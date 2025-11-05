@@ -1,0 +1,10 @@
+# Ignora a pasta de módulos local.
+node_modules
+
+# Ignora o arquivo de segredos local
+.env
+
+# Ignora arquivos do Git e do próprio Docker
+.git
+.gitignore
+Dockerfile
